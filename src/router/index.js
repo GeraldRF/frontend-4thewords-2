@@ -1,7 +1,11 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
 
 //import all component used in routes
-import Home from "@/views/Home.vue";
+import Home from '@/views/Home.vue'
+import Create from '@/views/CreateHistoricalEvent.vue'
+import Update from '@/views/UpdateHistoricalEvent.vue'
+import Details from '@/views/ShowHistoricalEventDetails.vue'
+import Top from '@/views/TopHistoricalEvents.vue'
 
 //init routes
 const routes = [
@@ -9,6 +13,26 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/crear",
+    name: "Create",
+    component: Create,
+  },
+  {
+    path: "/editar/:id/:name",
+    name: "Update",
+    component: Update,
+  },
+  {
+    path: "/detalles/:id/:name",
+    name: "Details",
+    component: Details,
+  },
+  {
+    path: "/top-10-sucesos-mas-populares",
+    name: "Top",
+    component: Top,
   },
 ];
 
