@@ -15,7 +15,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/crear",
+    path: "/agregar",
     name: "Create",
     component: Create,
   },
