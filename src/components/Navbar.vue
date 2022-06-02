@@ -5,7 +5,7 @@
     </div>
     <ul>
       <li>
-        <router-link to="/">Home</router-link>
+        <router-link to="/" class="p-2 text-red-600 bg-gray-300 rounded">Home</router-link>
       </li>
       <li>
         <router-link to="/agregar">Agrega un suceso</router-link> |
