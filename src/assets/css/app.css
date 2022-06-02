@@ -1,0 +1,19 @@
+.showMenu {
+  animation: show 0.4s forwards;
+}
+@keyframes show {
+  0% {
+    right: -340px;
+  }
+  100% {
+    right: 0;
+  }
+}
+.closeMenu {
+  animation: close 0.4s forwards;
+}
+@keyframes close {
+  100% {
+    right: -340px;
+  }
+}
