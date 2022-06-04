@@ -17,3 +17,14 @@
     right: -340px;
   }
 }
+
+.overlay-content {
+  width: 1px;
+  height: 1px;
+  position: relative;
+}
+.overlay-content svg {
+  position: absolute;
+  top: -26px;
+  left: -13px;
+}

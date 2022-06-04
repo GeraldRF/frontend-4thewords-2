@@ -11,7 +11,7 @@
       bg-blue-700
     "
   >
-    <div class="p-2 md:mr-5 pr-6 text-xl text-white md:border-r-2">
+    <div class="p-2 md:mr-5 pr-6 text-3xl text-white md:border-r-2">
       <router-link to="/" class="flex items-center">
         <BookOpenIcon class="w-10"></BookOpenIcon>
         LibroVirtual</router-link
@@ -25,7 +25,8 @@
     <ul
       class="
         hidden
-        w-80
+        w-72
+        md:w-full
         h-screen
         fixed
         top-0
@@ -57,8 +58,7 @@
           to="/"
           class="
             p-2
-            text-xl
-            md:text-lg
+            text-2xl
             w-full
             text-white
             hover:text-blue-700 hover:bg-white
@@ -72,8 +72,7 @@
           to="/agregar"
           class="
             p-2
-            text-xl
-            md:text-lg
+            text-2xl
             text-white
             hover:text-blue-700 hover:bg-white
             rounded
@@ -86,8 +85,7 @@
           to="/top-10-sucesos-mas-populares"
           class="
             p-2
-            text-xl
-            md:text-lg
+            text-2xl
             text-white
             hover:text-blue-700 hover:bg-white
             rounded

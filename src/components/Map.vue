@@ -24,8 +24,8 @@
     </ol-map>
     <div v-show="purpose=='input'" class="flex items-center">
         <button  @click="getCountry" class="py-2 px-6 bg-green-700 text-white rounded">Establecer</button>
-        <p class="ml-5 text-red-800">{{this.error}}</p>
-         <p v-show="this.error == ''">Deslice para elegir ubicación</p>
+         <p :class="{'ml-5':true, 'text-red-800': this.msg.code == 2, 'text-green-900': this.msg.code == 1 } ">{{this.msg.message}}</p>
+         <p v-show="this.msg.message == ''">Deslice para elegir ubicación</p>
     </div>
     </div>
 </template>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       currentCenter: this.center,
-      error: ''
+      msg: {code: 0, message: ''}
     };
   },
   methods: {
@@ -67,21 +67,28 @@ export default {
       this.axios.get(ENDPOINT).then((response) => {
         if(response.data.countryName){
             this.$emit('setData', {country: response.data.countryName, coordinates: this.currentCenter});
+            this.msg.message = `Selección correcta: ${response.data.countryName}`
+            this.msg.code = 1 
         }else {
             var error = response.data.status.message;
 
+            let time = 0
             if(error == 'no country code found'){
               error = 'Ubique el punto en un pais'
+              time = 2400
             }else if(error == 'invalid lat/lng'){
-              error = 'Latitud/Logitud invalida'
+              error = 'Latitud/Logitud invalida | Se ha colocado de nuevo en el centro del mapa'
+              this.$refs.view.setCenter([40,40])
+              time = 5000
             }
-            this.error = error
-            this.$refs.view.setCenter([40,40])
+            this.msg.code = 2
+            this.msg.message = error
+            
 
             let _this = this
             setTimeout(function(){
-                _this.error = ''
-            }, 2400)
+                _this.msg.message = ''
+            }, time)
         }
       });
     },

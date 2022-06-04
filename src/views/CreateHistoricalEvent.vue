@@ -9,6 +9,7 @@
         flex flex-wrap
         justify-around
         gap-y-10
+        md:text-2xl
       "
       ref="form"
     >
@@ -17,7 +18,7 @@
         <input
           type="text"
           name="name"
-          class="border-b-2 border-blue-300 outline-none text-gray-500"
+          class="border-b-2 outline-none text-gray-500"
         />
       </div>
       <div class="flex flex-col gap-1 w-full md:w-5/12">
@@ -25,7 +26,7 @@
         <input
           type="date"
           name="date"
-          class="border-b-2 border-blue-300 outline-none text-gray-500"
+          class="border-b-2 outline-none text-gray-500"
         />
       </div>
       <div class="flex flex-col gap-1 w-full md:w-11/12 lg:w-5/12">
@@ -56,7 +57,7 @@
           <input
             type="file"
             name="img"
-            class="border-b-2 border-blue-300 outline-none text-gray-500"
+            class="border-b-2 outline-none text-gray-500"
           />
         </div>
         <p>Ó</p>
@@ -67,7 +68,7 @@
           <input
             type="text"
             name="img_url"
-            class="border-b-2 border-blue-300 outline-none text-gray-500"
+            class="border-b-2 outline-none text-gray-500"
           />
         </div>
       </div>
@@ -84,7 +85,7 @@
         </div>
         <Map purpose="input" @setData="setMapData"></Map>
       </div>
-      <div class="w-full mt-5 mb-1 border-b-2"></div>
+      <div class="w-full mt-2 mb-1 border-b-2"></div>
       <div class="w-full flex justify-end">
         <button
           type="submit"
