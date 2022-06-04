@@ -28,3 +28,13 @@
   top: -26px;
   left: -13px;
 }
+
+
+.required::after {
+  content: "*";
+  font-size: xx-large;
+  color: red;
+}
+.img-required {
+  border-color:red;
+}

@@ -14,7 +14,7 @@
       ref="form"
     >
       <div class="flex flex-col gap-1 w-full md:w-5/12">
-        <label for="name" class="text-gray-800">Nombre</label>
+        <label for="name" ref="lblName" class="text-gray-800">Nombre</label>
         <input
           type="text"
           name="name"
@@ -23,7 +23,9 @@
         />
       </div>
       <div class="flex flex-col gap-1 w-full md:w-5/12">
-        <label for="date" class="text-gray-800">Fecha del suceso</label>
+        <label for="date" ref="lblDate" class="text-gray-800"
+          >Fecha del suceso</label
+        >
         <input
           type="date"
           name="date"
@@ -32,7 +34,9 @@
         />
       </div>
       <div class="flex flex-col gap-1 w-full md:w-11/12 lg:w-5/12">
-        <label for="description" class="text-gray-800">Descripción</label>
+        <label for="description" ref="lblDescription" class="text-gray-800"
+          >Descripción</label
+        >
         <textarea
           name="description"
           class="
@@ -60,6 +64,7 @@
           lg:w-5/12
           border-2
         "
+        ref="imageSelector"
       >
         <div class="w-full flex flex-col">
           <label for="img" class="text-gray-800 mb-2"
@@ -68,10 +73,9 @@
           <input
             type="file"
             name="img"
+            ref="image"
             class="border-b-2 outline-none text-gray-500"
           />
-
-          {{ this.description }}
         </div>
         <p>Ó</p>
         <div class="w-full flex flex-col">
@@ -96,7 +100,7 @@
           "
         >
           <div>
-            <label for="country">Pais: </label>
+            <label for="country" ref="lblCountry">Pais: </label>
             <input
               type="text"
               name="country"
@@ -106,7 +110,7 @@
             />
           </div>
           <div>
-            <label for="coordinates">Coordenadas: </label>
+            <label for="coordinates" ref="lblCoordinates">Coordenadas: </label>
             <input
               type="text"
               name="coordinates"
@@ -119,7 +123,10 @@
         <Map purpose="input" @setData="setMapData"></Map>
       </div>
       <div class="w-full mt-2 mb-1 border-b-2"></div>
-      <div class="w-full flex justify-end">
+      <div class="w-full flex flex-wrap justify-center md:justify-end items-center">
+        <p class="mr-3 text-red-700">
+          {{ this.msg }}
+        </p>
         <button
           type="submit"
           class="
@@ -153,20 +160,98 @@ export default {
       img_url: "",
       country: "",
       coordinates: "",
+      msg: "",
     };
   },
   mounted() {
     this.$refs.form.addEventListener("submit", (e) => {
       e.preventDefault();
-      this.$emit("submited", {
-        name: this.name,
-        date: this.date,
-        description: this.description,
-        img_url: this.img_url,
-        country: this.country,
-        coorditantes: this.coordinates,
-        file: this.file
-      });
+
+      let validated = true;
+
+      if (this.name == "") {
+        this.$refs.lblName.classList.add("required");
+        validated = false;
+      }
+      if (this.date == "") {
+        this.$refs.lblDate.classList.add("required");
+        validated = false;
+      }
+      if (this.description == "") {
+        this.$refs.lblDescription.classList.add("required");
+        validated = false;
+      }
+      if (this.country == "") {
+        this.$refs.lblCountry.classList.add("required");
+        this.$refs.lblCoordinates.classList.add("required");
+        validated = false;
+      }
+      if (this.img_url == "" && this.$refs.image.value == "") {
+        this.$refs.imageSelector.classList.add("img-required");
+        validated = false;
+      } else {
+        if (this.$refs.image.value != "") {
+          let data = new FormData();
+          data.append("image", this.$refs.image.files[0]);
+          var config = {
+            method: "post",
+            url: "http://localhost:8000/api/historical-events/upload",
+            data: data,
+          };
+
+          this.axios(config)
+            .then((response) => {
+              if (response.data.url) {
+                this.img_url = response.data.url;
+                if (validated) {
+                  this.$emit("submited", {
+                    name: this.name,
+                    date: this.date,
+                    description: this.description,
+                    img_url: this.img_url,
+                    country: this.country,
+                    coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
+                  });
+                }
+              } else
+                alert("A ocurrido un error durante la subida de la imagen");
+            })
+            .catch((error) => {
+              console.log(error);
+              validated = false;
+              alert("A ocurrido un error durante la subida de la imagen");
+            });
+        } else if (this.img_url != "") {
+          let url = this.img_url;
+          if (
+            !(
+              (url.includes("http://") || url.includes("https://")) &&
+              (url.includes(".jpg", url.length - 4) ||
+                url.includes(".png", url.length - 4) ||
+                url.includes(".jpeg", url.length - 5))
+            )
+          ) {
+            validated = false;
+            alert(
+              "Formato de URL incorreto, esta seguro que es una imagen de internet?"
+            );
+          } else {
+            if (validated) {
+              this.$emit("submited", {
+                name: this.name,
+                date: this.date,
+                description: this.description,
+                img_url: this.img_url,
+                country: this.country,
+                coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
+              });
+            }
+          }
+        }
+      }
+      if (!validated) {
+        this.msg = "Error: Vefique los datos";
+      }
     });
   },
   methods: {
