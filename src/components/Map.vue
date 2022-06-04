@@ -38,6 +38,7 @@
     </ol-map>
     <div v-show="purpose == 'input'" class="flex items-center">
       <button
+        type="button"
         @click="getCountry"
         class="py-2 px-6 bg-green-700 text-white rounded"
       >
@@ -84,13 +85,16 @@ export default {
     };
   },
   methods: {
+    
     centerChanged(center) {
       this.currentCenter = center;
     },
     getCountry() {
-      var latitude = this.currentCenter[1];
-      var longitude = this.currentCenter[0];
-      var ENDPOINT = `http://api.geonames.org/countryCodeJSON?lat=${latitude}&lng=${longitude}&username=geraldrf`;
+      this.msg = {code: 0, message:"Obteniendo datos, espere."}
+      
+      var latitude = this.currentCenter[1]
+      var longitude = this.currentCenter[0]
+      var ENDPOINT = `http://api.geonames.org/countryCodeJSON?lat=${latitude}&lng=${longitude}&username=geraldrf`
       this.axios.get(ENDPOINT).then((response) => {
         if (response.data.countryName) {
           this.$emit("setData", {
