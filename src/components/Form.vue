@@ -102,6 +102,21 @@
         ref="imageSelector"
       >
         <div class="w-full flex flex-col">
+          <div v-if="this.historicalEvent" class="mx-auto w-full sm:w-5/12">
+            <img
+              class="rounded-xl w-full h-full shadow"
+              v-if="img_url.includes('http')"
+              :src="img_url"
+              :alt="`${name} image`"
+            />
+            <img
+              class="rounded-xl w-full h-full shadow-lg"
+              v-else
+              :src="`http://localhost:8000/historical-events/get-upload/${local_img_url}`"
+              :alt="`${name} image`"
+            />
+          </div>
+
           <label for="img" class="text-gray-800 mb-2"
             >Seleccione una imagen relativa al suceso</label
           >
@@ -190,7 +205,7 @@ import Map from "@/components/Map.vue";
 export default {
   name: "Form",
   components: { Map },
-  prop: {
+  props: {
     historicalEvent: Object,
   },
   data() {
@@ -203,7 +218,21 @@ export default {
       country: "",
       coordinates: "",
       msg: "",
+      local_img_url: "",
     };
+  },
+  watch: {
+    historicalEvent: function () {
+      this.name = this.historicalEvent.name;
+      this.date = this.historicalEvent.date.split(" ")[0];
+      this.description = this.historicalEvent.description;
+      this.history = this.historicalEvent.history;
+      if (this.historicalEvent.img_url.includes("http"))
+        this.img_url = this.historicalEvent.img_url;
+      else this.local_img_url = this.historicalEvent.img_url;
+      this.country = this.historicalEvent.country;
+      this.coordinates = this.historicalEvent.coordinates.split(",");
+    },
   },
   mounted() {
     this.$refs.form.addEventListener("submit", (e) => {
@@ -242,11 +271,20 @@ export default {
         this.$refs.lblCoordinates.classList.add("required");
         validated = false;
       }
-      if (this.img_url == "" && this.$refs.image.value == "") {
-        this.$refs.imageSelector.classList.add("img-required");
+      if (
+        this.img_url == "" &&
+        this.$refs.image.value == "" &&
+        this.local_img_url == ""
+      ) {
+        this.$refs.imageSelector.classList.add("border-red-700");
         validated = false;
       } else {
         if (this.$refs.image.value != "") {
+
+          if(this.local_img_url != ""){
+            this.axios.delete('http://localhost:8000/api/historical-events/remove-upload/'+this.local_img_url).then();
+          }
+
           let data = new FormData();
           data.append("image", this.$refs.image.files[0]);
           var config = {
@@ -264,6 +302,7 @@ export default {
                     name: this.name,
                     date: this.date,
                     description: this.description,
+                    history: this.history,
                     img_url: this.img_url,
                     country: this.country,
                     coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
@@ -273,7 +312,6 @@ export default {
                 alert("A ocurrido un error durante la subida de la imagen");
             })
             .catch((error) => {
-              console.log(error);
               validated = false;
               alert("A ocurrido un error durante la subida de la imagen");
             });
@@ -303,6 +341,19 @@ export default {
                 coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
               });
             }
+          }
+        } else {
+          if (validated) {
+            if (this.img_url == "") this.img_url = this.local_img_url;
+            this.$emit("submited", {
+              name: this.name,
+              date: this.date,
+              description: this.description,
+              history: this.history,
+              img_url: this.img_url,
+              country: this.country,
+              coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
+            });
           }
         }
       }
