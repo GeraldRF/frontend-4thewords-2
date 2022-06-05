@@ -55,14 +55,12 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import HistoricalEventList from "@/components/HistoricalEventList.vue";
 import { TrendingUpIcon, LocationMarkerIcon, ClockIcon, PlusIcon } from "@heroicons/vue/outline";
 
 export default {
   name: "Home",
   components: {
-    Navbar,
     HistoricalEventList,
     TrendingUpIcon,
     LocationMarkerIcon,

@@ -14,11 +14,12 @@ export default {
       formData.append("img_url", dataSubmited.img_url);
       formData.append("name", dataSubmited.name);
       formData.append("description", dataSubmited.description);
+      formData.append("history", dataSubmited.history);
       formData.append("date", dataSubmited.date);
       formData.append("popularity", 0);
       formData.append("country", dataSubmited.country);
       formData.append("coordinates", dataSubmited.coordinates);
-
+      console.log(formData);
       var config = {
         method: "post",
         url: "http://localhost:8000/api/historical-events",
@@ -30,7 +31,7 @@ export default {
           this.$router.push({name:'Home', query: {created:true}})
         })
         .catch((error) => {
-          alert('Ha ocurrido un error, intentelo de nuevo')
+          alert('Ha ocurrido un error')
         });
     },
   },
