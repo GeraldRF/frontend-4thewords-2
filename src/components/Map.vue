@@ -3,7 +3,7 @@
     <ol-map
       :loadTilesWhileAnimating="true"
       :loadTilesWhileInteracting="true"
-      style="height: 450px"
+      :style="`height:${this.height}`"
     >
       <ol-view
         ref="view"
@@ -25,7 +25,7 @@
         </template>
       </ol-overlay>
       <div v-show="purpose == 'showAllData'">
-        <ol-overlay v-for="he in historicalEvents" :position="he" :key="he">
+        <ol-overlay v-for="he in historicalEvents" :position="he.coordinates.split(',')" :key="he">
           <template v-slot="">
             <div class="overlay-content">
               <LocationMarkerIcon class="w-7 text-red-700"></LocationMarkerIcon>
@@ -38,7 +38,7 @@
       <button
         type="button"
         @click="getCountry"
-        class="py-2 px-6 bg-green-700 text-white rounded"
+        class="my-2 ml-2 py-2 px-5 bg-green-700 hover:bg-green-600 text-white rounded"
       >
         Establecer
       </button>
@@ -65,7 +65,8 @@ export default {
   props: {
     historicalEvents: Array,
     purpose: String,
-  },
+    height: String,
+    },
   components: { LocationMarkerIcon },
   setup() {
     const center = ref([40, 40]);
