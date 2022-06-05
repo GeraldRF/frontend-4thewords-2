@@ -21,7 +21,7 @@
         <h2>Vease tambien:</h2>
       </div>
       <div>
-        <ul>
+        <ul class="text-gray-600">
           <li>
             <router-link to="/top-10" class="flex items-start hover:underline">
               <TrendingUpIcon class="w-9 xl:w-6 mr-2"></TrendingUpIcon> Top 10 sucesos
@@ -43,9 +43,9 @@
         </ul>
       </div>
     </div>
-    <div class="px-5 md:px-20 w-full lg:w-9/12 h-full overflow-auto">
-      <div class="w-full my-10 text-xl md:text-2xl xl:text-3xl text-blue-900">
-        <h1>Sucesos historicos</h1>
+    <div class="px-5 md:px-20 w-full lg:w-9/12 h-full">
+      <div class="w-full pb-2 mt-7 mb-5 flex justify-between items-center text-2xl md:text-2xl xl:text-3xl text-blue-900 border-b-2">
+        <h1 class="">Sucesos historicos</h1> <router-link to="/agregar" class="p-1 bg-blue-700 hover:bg-blue-500 text-white rounded-full"><PlusIcon class="w-7"></PlusIcon></router-link> 
       </div>
 
       <HistoricalEventList :historicalEvents="this.historicalEvents"></HistoricalEventList>
@@ -57,8 +57,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import HistoricalEventList from "@/components/HistoricalEventList.vue";
-import { ThumbUpIcon, PencilAltIcon, TrashIcon } from "@heroicons/vue/solid";
-import { TrendingUpIcon, LocationMarkerIcon, ClockIcon } from "@heroicons/vue/outline";
+import { TrendingUpIcon, LocationMarkerIcon, ClockIcon, PlusIcon } from "@heroicons/vue/outline";
 
 export default {
   name: "Home",
@@ -68,9 +67,7 @@ export default {
     TrendingUpIcon,
     LocationMarkerIcon,
     ClockIcon,
-    ThumbUpIcon,
-    PencilAltIcon,
-    TrashIcon,
+    PlusIcon,
   },
   data() {
     return {
