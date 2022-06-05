@@ -19,7 +19,6 @@ export default {
       formData.append("popularity", 0);
       formData.append("country", dataSubmited.country);
       formData.append("coordinates", dataSubmited.coordinates);
-      console.log(formData);
       var config = {
         method: "post",
         url: "http://localhost:8000/api/historical-events",
@@ -28,7 +27,7 @@ export default {
 
       this.axios(config)
         .then((response) => {
-          this.$router.push({name:'Home', query: {created:true}})
+          this.$router.push({name:'Home', query: {c:'1'}})
         })
         .catch((error) => {
           alert('Ha ocurrido un error')
