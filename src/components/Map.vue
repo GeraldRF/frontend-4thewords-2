@@ -69,7 +69,7 @@ export default {
     },
   components: { LocationMarkerIcon },
   setup() {
-    const center = ref([40, 40]);
+    const center = ref([0,20]);
     const projection = ref("EPSG:4326");
 
     return {
@@ -113,7 +113,7 @@ export default {
             } else if (error == "invalid lat/lng") {
               error =
                 "Latitud/Logitud invalida | Se ha colocado de nuevo en el centro del mapa";
-              this.$refs.view.setCenter([40, 40]);
+              this.$refs.view.setCenter([0,20]);
               time = 5000;
             }
             this.msg.code = 2;
