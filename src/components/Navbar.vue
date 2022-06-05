@@ -64,7 +64,7 @@
             hover:text-blue-700 hover:bg-white
             rounded
           "
-          >Home</router-link
+          >Inicio</router-link
         >
       </li>
       <li class="w-full md:w-auto">
@@ -91,6 +91,19 @@
             rounded
           "
           >Top 10</router-link
+        >
+      </li>
+      <li class="w-full md:w-auto">
+        <router-link
+          to="/sucesos-en-orden-cronologico"
+          class="
+            p-2
+            text-2xl
+            text-white
+            hover:text-blue-700 hover:bg-white
+            rounded
+          "
+          >Orden cronologico</router-link
         >
       </li>
     </ul>
