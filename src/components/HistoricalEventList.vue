@@ -5,6 +5,7 @@
       v-for="hEvent in historicalEvents"
       :key="hEvent.id"
       :historicalEvent="hEvent"
+      :id="hEvent.id"
     ></HistoricalEvent>
   </div>
 </template>
