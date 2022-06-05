@@ -9,7 +9,7 @@
         flex flex-wrap
         justify-around
         gap-y-10
-        md:text-2xl
+        md:text-xl
       "
       ref="form"
     >
@@ -120,7 +120,7 @@
             />
           </div>
         </div>
-        <Map purpose="input" @setData="setMapData"></Map>
+        <Map purpose="input" @setData="setMapData" height="450px"></Map>
       </div>
       <div class="w-full mt-2 mb-1 border-b-2"></div>
       <div class="w-full flex flex-wrap justify-center md:justify-end items-center">
@@ -130,12 +130,13 @@
         <button
           type="submit"
           class="
-            px-10
+            px-6
             py-3
             w-full
             md:w-max md:mr-3
             text-xl
             bg-blue-700
+            hover:bg-blue-500
             text-white
             rounded
           "
