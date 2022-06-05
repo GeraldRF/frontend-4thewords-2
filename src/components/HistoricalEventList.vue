@@ -1,8 +1,10 @@
 <template>
-  <div class="py-3 w-full flex flex-col gap-2">
+  <div class="py-3 w-full flex flex-col gap-2 overflow-auto">
+    <h2 v-show="historicalEvents.length == 0">No hay historias disponibles</h2>
     <HistoricalEvent
       v-for="hEvent in historicalEvents"
-      :key="hEvent.id" :historicalEvent="hEvent"
+      :key="hEvent.id"
+      :historicalEvent="hEvent"
     ></HistoricalEvent>
   </div>
 </template>
