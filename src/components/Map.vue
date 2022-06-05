@@ -25,10 +25,65 @@
         </template>
       </ol-overlay>
       <div v-show="purpose == 'showAllData'">
-        <ol-overlay v-for="he in historicalEvents" :position="he.coordinates.split(',')" :key="he">
+        <ol-overlay
+          v-for="he in historicalEvents"
+          :position="he.coordinates.split(',')"
+          :key="he"
+        >
           <template v-slot="">
-            <div class="overlay-content">
-              <LocationMarkerIcon class="w-7 text-red-700"></LocationMarkerIcon>
+            <div class="overlay-content relative">
+              <button @click="showPop(he.id)">
+                <LocationMarkerIcon
+                  class="w-7 text-red-700"
+                ></LocationMarkerIcon>
+              </button>
+              <div
+                :id="`pop-${he.id}`"
+                class="hidden bg-white w-72 absolute top-0 rounded-xl"
+              >
+                <div class="w-full">
+                  <img
+                    class="rounded-t-xl w-full h-full shadow"
+                    v-if="he.img_url.includes('http')"
+                    :src="he.img_url"
+                    :alt="`${he.name} image`"
+                  />
+                  <img
+                    class="rounded-t-xl w-full h-full shadow-lg"
+                    v-else
+                    :src="`http://localhost:8000/historical-events/get-upload/${he.img_url}`"
+                    :alt="`${he.name} image`"
+                  />
+                </div>
+                <div class="p-2">
+                  <h2 class="mb-2 text-lg text-blue-800 border-b-2">
+                    {{ he.name }}
+                  </h2>
+                  <div class="text-sm text-gray-600">
+                    <p class="mb-2">{{ he.description }}</p>
+                  </div>
+                  <div class="w-full flex justify-end">
+                    <router-link
+                      :to="{
+                        name: 'Details',
+                        params: {
+                          id: he.id,
+                          name: he.name.replaceAll(' ', '_'),
+                        },
+                      }"
+                      class="
+                        py-1
+                        px-2
+                        text-blue-800
+                        border-2 border-blue-800
+                        hover:bg-blue-800 hover:text-white
+                        rounded
+                      "
+                      >Ver historia</router-link
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </template>
         </ol-overlay>
@@ -38,7 +93,16 @@
       <button
         type="button"
         @click="getCountry"
-        class="my-2 ml-2 py-2 px-5 bg-green-700 hover:bg-green-600 text-white rounded"
+        class="
+          my-2
+          ml-2
+          py-2
+          px-5
+          bg-green-700
+          hover:bg-green-600
+          text-white
+          rounded
+        "
       >
         Establecer
       </button>
@@ -66,10 +130,10 @@ export default {
     historicalEvents: Array,
     purpose: String,
     height: String,
-    },
+  },
   components: { LocationMarkerIcon },
   setup() {
-    const center = ref([0,20]);
+    const center = ref([0, 20]);
     const projection = ref("EPSG:4326");
 
     return {
@@ -81,9 +145,23 @@ export default {
     return {
       currentCenter: this.center,
       msg: { code: 0, message: "" },
+      currentPop: "",
     };
   },
   methods: {
+    showPop(id) {
+      let newPop = document.getElementById(`pop-${id}`);
+      newPop.classList.add("block");
+      newPop.classList.remove("hidden");
+
+      if (this.currentPop != "" && this.currentPop != id) {
+        let currentPop = document.getElementById(`pop-${this.currentPop}`);
+        currentPop.classList.add("hidden");
+        currentPop.classList.remove("block");
+      }
+
+      this.currentPop = id;
+    },
     centerChanged(center) {
       this.currentCenter = center;
     },
@@ -113,7 +191,7 @@ export default {
             } else if (error == "invalid lat/lng") {
               error =
                 "Latitud/Logitud invalida | Se ha colocado de nuevo en el centro del mapa";
-              this.$refs.view.setCenter([0,20]);
+              this.$refs.view.setCenter([0, 20]);
               time = 5000;
             }
             this.msg.code = 2;
@@ -126,8 +204,11 @@ export default {
           }
         })
         .catch((error) => {
-          if(error.code === 'ERR_NETWORK'){
-            this.msg = {code: 2, message: 'Error de red, intentelo de nuevo.'}
+          if (error.code === "ERR_NETWORK") {
+            this.msg = {
+              code: 2,
+              message: "Error de red, intentelo de nuevo.",
+            };
           }
         });
     },
