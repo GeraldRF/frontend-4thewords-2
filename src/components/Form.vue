@@ -14,7 +14,15 @@
       ref="form"
     >
       <div class="flex flex-col gap-1 w-full md:w-5/12">
-        <label for="name" ref="lblName" class="text-gray-800">Nombre</label>
+        <label
+          for="name"
+          ref="lblName"
+          :class="{
+            'text-gray-800': true,
+            'text-red-500': this.name.length > 100,
+          }"
+          >Nombre ( {{ this.name.length }}/100)</label
+        >
         <input
           type="text"
           name="name"
@@ -34,23 +42,50 @@
         />
       </div>
       <div class="flex flex-col gap-1 w-full md:w-11/12 lg:w-5/12">
-        <label for="description" ref="lblDescription" class="text-gray-800"
-          >Descripción</label
-        >
-        <textarea
-          name="description"
-          class="
-            p-2
-            shadow-md
-            border-2
-            outline-none
-            text-gray-500
-            rounded
-            resize-none
-          "
-          v-model="this.description"
-          rows="6"
-        ></textarea>
+        <div class="flex flex-col gap-1 w-full">
+          <label
+            for="description"
+            ref="lblDescription"
+            :class="{
+              'text-gray-800': true,
+              'text-red-500': this.description.length > 150,
+            }"
+            >Descripción breve ({{ this.description.length }}/150)</label
+          >
+          <textarea
+            name="description"
+            class="
+              p-2
+              shadow-md
+              border-2
+              outline-none
+              text-gray-500
+              rounded
+              resize-none
+            "
+            v-model="this.description"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="flex flex-col gap-1 w-full">
+          <label for="description" ref="lblHistory" class="text-gray-800"
+            >Historia</label
+          >
+          <textarea
+            name="history"
+            class="
+              p-2
+              shadow-md
+              border-2
+              outline-none
+              text-gray-500
+              rounded
+              resize-none
+            "
+            v-model="this.history"
+            rows="4"
+          ></textarea>
+        </div>
       </div>
       <div
         class="
@@ -123,7 +158,9 @@
         <Map purpose="input" @setData="setMapData" height="450px"></Map>
       </div>
       <div class="w-full mt-2 mb-1 border-b-2"></div>
-      <div class="w-full flex flex-wrap justify-center md:justify-end items-center">
+      <div
+        class="w-full flex flex-wrap justify-center md:justify-end items-center"
+      >
         <p class="mr-3 text-red-700">
           {{ this.msg }}
         </p>
@@ -153,14 +190,15 @@ import Map from "@/components/Map.vue";
 export default {
   name: "Form",
   components: { Map },
-  prop:{
-    historicalEvent: Object
+  prop: {
+    historicalEvent: Object,
   },
   data() {
     return {
       name: "",
       date: "",
       description: "",
+      history: "",
       img_url: "",
       country: "",
       coordinates: "",
@@ -173,7 +211,12 @@ export default {
 
       let validated = true;
 
-      if (this.name == "") {
+      if (this.name == "" || this.name.length > 100) {
+        if (this.name.length > 100)
+          alert(
+            "La cantidad de caracteres maxima permitida en el nombre son 100, usted tiene " +
+              this.name.length
+          );
         this.$refs.lblName.classList.add("required");
         validated = false;
       }
@@ -181,8 +224,17 @@ export default {
         this.$refs.lblDate.classList.add("required");
         validated = false;
       }
-      if (this.description == "") {
+      if (this.description == "" || this.description.length > 150) {
+        if (this.description.length > 150)
+          alert(
+            "La cantidad de caracteres maxima permitida en la descripcion son 150, usted tiene " +
+              this.description.length
+          );
         this.$refs.lblDescription.classList.add("required");
+        validated = false;
+      }
+      if (this.history == "") {
+        this.$refs.lblHistory.classList.add("required");
         validated = false;
       }
       if (this.country == "") {
@@ -245,6 +297,7 @@ export default {
                 name: this.name,
                 date: this.date,
                 description: this.description,
+                history: this.history,
                 img_url: this.img_url,
                 country: this.country,
                 coordinates: `${this.coordinates[0]},${this.coordinates[1]}`,
