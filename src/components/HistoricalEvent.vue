@@ -164,7 +164,10 @@ export default {
         }
         this.axios(config)
         .then((response) => {
-          this.$router.push({name:'Home', query: {'r':1}})
+          if(!this.historicalEvent.img_url.includes('http'))
+          this.axios.delete('http://localhost:8000/api/historical-events/remove-upload/'+this.historicalEvent.img_url).then();
+
+          this.$router.push({name:'Home', query: {r:'1'}})
         })
         .catch((error) => {
             alert('Ha ocurrido un error, intentelo de nuevo')
