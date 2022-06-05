@@ -152,6 +152,9 @@ import Map from "@/components/Map.vue";
 export default {
   name: "Form",
   components: { Map },
+  prop:{
+    historicalEvent: Object
+  },
   data() {
     return {
       name: "",
