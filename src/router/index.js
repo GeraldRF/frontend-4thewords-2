@@ -6,6 +6,8 @@ import Create from '@/views/CreateHistoricalEvent.vue'
 import Update from '@/views/UpdateHistoricalEvent.vue'
 import Details from '@/views/ShowHistoricalEventDetails.vue'
 import Top from '@/views/TopHistoricalEvents.vue'
+import Chron from '@/views/ChronologicalOrderEvents.vue'
+import Map from '@/views/EventsMap.vue'
 
 //init routes
 const routes = [
@@ -30,9 +32,19 @@ const routes = [
     component: Details,
   },
   {
-    path: "/top-10-sucesos-mas-populares",
+    path: "/top-10",
     name: "Top",
     component: Top,
+  },
+  {
+    path: "/orden-cronologico",
+    name: "Chronological",
+    component: Chron,
+  },
+  {
+    path: "/mapa",
+    name: "Map",
+    component: Map,
   },
 ];
 
