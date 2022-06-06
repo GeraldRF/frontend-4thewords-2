@@ -2,7 +2,7 @@
   <div
     class="
       mx-auto
-      w-10/12
+      w-11/12
       sm:w-full
       shadow
       flex flex-wrap
