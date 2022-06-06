@@ -167,7 +167,21 @@ export default {
     this.axios
       .get("http://localhost:8000/api/historical-events")
       .then((response) => {
-        this.historicalEvents = response.data.data;
+        if (this.$route.query.q) {
+          let q = this.$route.query.q;
+          let by = this.$route.query.by;
+          if (by == 'name') {
+            this.historicalEvents = response.data.data.filter((he) =>
+              he.name.toLowerCase().includes(q)
+            );
+          } else {
+            this.historicalEvents = response.data.data.filter((he) =>
+              he.country.toLowerCase().includes(q)
+            );
+          }
+        } else {
+          this.historicalEvents = response.data.data;
+        }
       });
   },
   methods: {
