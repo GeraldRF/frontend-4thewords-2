@@ -11,6 +11,11 @@
         :projection="projection"
         @centerChanged="centerChanged"
       />
+
+      <ol-fullscreen-control />
+      <ol-zoom-control />
+      <ol-zoomslider-control />
+
       <ol-tile-layer>
         <ol-source-osm />
       </ol-tile-layer>
